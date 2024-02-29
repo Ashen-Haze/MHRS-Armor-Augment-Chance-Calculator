@@ -33,7 +33,7 @@ def roll(skill_id, aug_budget, total_skills, kept_skills):
 
         for aug_cost, aug_prob in skill_pool_probs.items(): # decrease average budget by average augment cost
             average_aug_budget -= aug_cost * (aug_prob / total_aug_probs)
-        average_skill_total += 1 - (chance_from_pool * 2) # increase average skill total by average added skill chance
+        average_skill_total += 1 - (chance_of_pool * 2) # increase average skill total by average added skill chance
 
         # Skills+ Augmentation
         # adds one skill and removes one skill

@@ -18,7 +18,7 @@ def roll(skill_id, aug_budget, total_skills, kept_skills):
 
         # Standard Augmentation
         # adds or removes one skill
-        average_def_aug_cost = Decimal("1.080") / Decimal("1.320") # magic number for R10 armor
+        average_def_aug_cost = Decimal("1.080") # magic number for R10 armor
         average_aug_budget = aug_budget - average_def_aug_cost # forced defense augment
         average_skill_total = total_skills
 

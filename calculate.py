@@ -17,30 +17,30 @@ def roll(skill_id, aug_budget, total_skills, kept_skills):
         chance_of_safe_removal = Decimal(total_skills - kept_skills) / Decimal(total_skills)
 
         # Standard Augmentation
-        # adds or removes one skill
+        # forces one added or removed skill
         average_def_aug_cost = Decimal("1.080") / Decimal("0.400") # magic number for R10 armor
         average_aug_budget = aug_budget - average_def_aug_cost # forced defense augment
         average_skill_total = total_skills
 
         total_aug_probs = sum(skill_pool_probs.values())
         chance_of_pool = skill_pool_probs[cost_pool] / total_aug_probs
-        chance_of_skill_addition = chance_of_pool * chance_from_pool
+        chance_from_skill_addition = chance_of_pool * chance_from_pool
         chance_of_pool = skill_pool_probs[-10] / total_aug_probs
-        chance_of_skill_removal = chance_of_pool * chance_of_safe_removal
+        chance_from_skill_removal = chance_of_pool * chance_of_safe_removal
 
-        chance_of_skill_addition *= average_aug_budget / cost_pool # modify skill addition chance by portion of overspent/underspent budget
-        chance_from_standard_aug = chance_of_skill_addition + chance_of_skill_removal
+        chance_from_skill_addition *= average_aug_budget / cost_pool # modify skill addition chance by portion of overspent/underspent budget
+        chance_from_standard_aug = chance_from_skill_addition + chance_from_skill_removal
 
-        for aug_cost, aug_prob in skill_pool_probs.items(): # decrease average budget by average augment cost
+        for aug_cost, aug_prob in skill_pool_probs.items(): # decrease average budget by average skill augment cost
             average_aug_budget -= aug_cost * (aug_prob / total_aug_probs)
         average_skill_total += 1 - (chance_of_pool * 2) # increase average skill total by average added skill chance
 
         # Skills+ Augmentation
-        # adds one skill and removes one skill
-        total_aug_probs = sum([prob for cost, prob in skill_pool_probs.items() if cost > 0]) # skill removal guaranteed separately
+        # forces one added skill and one removed skill
+        total_aug_probs = sum([prob for cost, prob in skill_pool_probs.items() if cost > 0]) # separate skill removal
         chance_of_pool = skill_pool_probs[cost_pool] / total_aug_probs
-        chance_of_skill_addition = chance_of_pool * chance_from_pool
-        chance_from_skills_plus_aug = chance_of_skill_addition * chance_of_safe_removal
+        chance_from_skill_addition = chance_of_pool * chance_from_pool
+        chance_from_skills_plus_aug = chance_from_skill_addition * chance_of_safe_removal
 
         # chance to add selected skill in additional augments
         def chance_from_added_augs(aug_budget):
